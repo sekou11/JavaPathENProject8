@@ -31,6 +31,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+   // implementation 'org.projectlombok:lombok:1.18.20'  
+   // https://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin
+compileOnly group: 'org.projectlombok', name: 'lombok-maven-plugin', version: '1.18.20.0'
+   
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile group: 'org.javamoney', name: 'moneta', version: '1.3'
