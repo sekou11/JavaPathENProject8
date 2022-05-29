@@ -2,28 +2,26 @@ package tourGuide.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gpsUtil.GpsUtil;
-import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
+import tourGuide.DTO.NearbyAttractionDto;
+import tourGuide.DTO.NearestAttractionDto;
+
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
+import tourGuide.user.UserPreferences;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
@@ -32,7 +30,9 @@ import tripPricer.TripPricer;
 public class TourGuideService {
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final GpsUtil gpsUtil;
-	private final RewardsService rewardsService;
+
+	@Autowired
+	private  RewardsService rewardsService;
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
@@ -91,16 +91,45 @@ public class TourGuideService {
 		return visitedLocation;
 	}
 
-	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
-		List<Attraction> nearbyAttractions = new ArrayList<>();
-		for(Attraction attraction : gpsUtil.getAttractions()) {
-			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
-				nearbyAttractions.add(attraction);
-			}
-		}
-		
-		return nearbyAttractions;
+//	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
+//		List<Attraction> nearbyAttractions = new ArrayList<>();
+//		for(Attraction attraction : gpsUtil.getAttractions()) {
+//			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
+//				nearbyAttractions.add(attraction);
+//			}
+//		}
+//		
+//		return nearbyAttractions;
+//	}
+
+	public NearbyAttractionDto getNearByAttractions(VisitedLocation visitedLocation) {
+
+		List<NearestAttractionDto> nearestAttractionDtoList = new ArrayList<>();
+
+		gpsUtil.getAttractions().forEach(attraction -> {
+			NearestAttractionDto nearestAttractionDto = new NearestAttractionDto(
+							attraction.attractionName,
+							attraction,
+							rewardsService.getDistance(attraction,visitedLocation.location),
+							rewardsService.getRewardPoints(attraction,visitedLocation.userId)
+					);
+
+					nearestAttractionDtoList.add(nearestAttractionDto);
+				}
+		);
+
+		NearbyAttractionDto nearbyAttractionDto = new NearbyAttractionDto();
+		nearbyAttractionDto.setUserLocation(visitedLocation.location);
+		nearbyAttractionDto.setClosestAttractionsList(nearestAttractionDtoList
+				.stream()
+				.sorted(Comparator.comparingDouble(NearestAttractionDto::getDistanceUserToAttraction))
+				.limit(5).collect(Collectors.toList())
+		);
+
+		return  nearbyAttractionDto;
+
 	}
+
 	
 	private void addShutDownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread() { 
