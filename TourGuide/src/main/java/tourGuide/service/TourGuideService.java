@@ -57,10 +57,14 @@ public class TourGuideService {
 	}
 	
 	public List<UserReward> getUserRewards(User user) {
+		// la liste des rewards
 		return user.getUserRewards();
 	}
 	
 	public VisitedLocation getUserLocation(User user) {
+		// si les lieux visités par un user est>0
+		//on choisit sa derniere location visité
+		//sinon trackUserLocation
 		VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
 			user.getLastVisitedLocation() :
 			trackUserLocation(user);
@@ -68,21 +72,30 @@ public class TourGuideService {
 	}
 	
 	public User getUser(String userName) {
+		//on recupere le user present dans internalUserMap
 		return internalUserMap.get(userName);
 	}
 	
 	public List<User> getAllUsers() {
+		// on recupere la liste de tout les users(valeur de internalUserMap)
+		// on on les convertit en string
 		return internalUserMap.values().stream().collect(Collectors.toList());
 	}
 	
 	public void addUser(User user) {
+		// si internalUserMap ne contient pas ce userName
+		// on l'ajoute a internalUserMap
 		if(!internalUserMap.containsKey(user.getUserName())) {
 			internalUserMap.put(user.getUserName(), user);
 		}
 	}
 	
 	public List<Provider> getTripDeals(User user) {
+		  //fait la somme de reward d'un user
 		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
+		//provider contient le price
+		//avec une api ket tripPricerApiKey
+		//le id du user,sa preference(adultes,enfants,duree du voyage, et le cumul des points
 		List<Provider> providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), 
 				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);
 		user.setTripDeals(providers);
@@ -90,12 +103,16 @@ public class TourGuideService {
 	}
 	
 	public VisitedLocation trackUserLocation(User user) {
+		// a partir de gps utilise on recupere la location du user
+		//on l'ajoute aux endroits visités
+		//on calcule le nombre de rewards pour ce user et on retourne la location visite
 		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
 		user.addToVisitedLocations(visitedLocation);
 		rewardsService.calculateRewards(user);
 		return visitedLocation;
 	}
 
+<<<<<<< HEAD
 //	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
 //		List<Attraction> nearbyAttractions = new ArrayList<>();
 //		for(Attraction attraction : gpsUtil.getAttractions()) {
@@ -142,6 +159,17 @@ public class TourGuideService {
 
 			recentUserLocationDtos.add(new RecentUserLocationDto(user.getUserId().toString(), user.getUserName(), user.getLastVisitedLocation().location));
 
+=======
+	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
+		List<Attraction> nearbyAttractions = new ArrayList<>();
+		// on parcour toutes  les actractions
+		// si ya une attraction a proximité
+		//on l'ajoute a nearbyAttractions
+		for(Attraction attraction : gpsUtil.getAttractions()) {
+			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
+				nearbyAttractions.add(attraction);
+			}
+>>>>>>> p8WithPascal
 		}
       return recentUserLocationDtos;
 	}

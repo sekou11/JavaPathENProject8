@@ -25,6 +25,7 @@ public class TestTourGuideService {
 
 	@Test
 	public void getUserLocation() {
+
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
@@ -143,7 +144,7 @@ public class TestTourGuideService {
 		UserPreferencesDto userPreferencesDto = new UserPreferencesDto();
 		userPreferencesDto.setNumberOfAdults(2);
 		userPreferencesDto.setTripDuration(3);
-		userPreferencesDto.setCurrency("USD");
+		userPreferencesDto.sgitetCurrency("USD");
 
 		UUID userUUId = UUID.fromString("098c2423-879e-52f2-01d2-f73eb8d04840");
 		User user = new User(userUUId,"test","0600000000","test@com");
