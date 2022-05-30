@@ -18,6 +18,7 @@ import gpsUtil.location.VisitedLocation;
 
 
 import tourGuide.DTO.RecentUserLocationDto;
+import tourGuide.DTO.UserPreferencesDto;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.DTO.NearbyAttractionDto;
 import tourGuide.DTO.NearestAttractionDto;
@@ -25,6 +26,7 @@ import tourGuide.DTO.NearestAttractionDto;
 
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
+import tourGuide.user.UserPreferences;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
@@ -142,6 +144,21 @@ public class TourGuideService {
 
 		}
       return recentUserLocationDtos;
+	}
+
+	public UserPreferences setUserPreferences(String userName ,UserPreferences userPreferences){
+		User user = getUser(userName);
+		 if (user !=null){
+			 user.setUserPreferences(userPreferences);
+			 return user.getUserPreferences();
+		 }
+		 return null;
+	}
+
+	public UserPreferences updateUserPreferences(String userName , UserPreferencesDto userPreferencesDto){
+		User user = getUser(userName);
+		user.setUserPreferences(new UserPreferences(userPreferencesDto));
+		return user.getUserPreferences();
 	}
 
 

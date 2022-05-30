@@ -13,10 +13,12 @@ import gpsUtil.location.VisitedLocation;
 import rewardCentral.RewardCentral;
 import tourGuide.DTO.NearbyAttractionDto;
 import tourGuide.DTO.RecentUserLocationDto;
+import tourGuide.DTO.UserPreferencesDto;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
+import tourGuide.user.UserPreferences;
 import tripPricer.Provider;
 
 public class TestTourGuideService {
@@ -134,6 +136,19 @@ public class TestTourGuideService {
        int nbUsers = tourGuideService.getAllUsers().size();
 		List<RecentUserLocationDto> recentUserLocationDto = tourGuideService.getAllusersCurrentLocation();
 		assertEquals(recentUserLocationDto.size() ,nbUsers);
+	}
+
+	@Test
+	public void userUpdatePreferences(){
+		UserPreferencesDto userPreferencesDto = new UserPreferencesDto();
+		userPreferencesDto.setNumberOfAdults(2);
+		userPreferencesDto.setTripDuration(3);
+		userPreferencesDto.setCurrency("USD");
+
+		UUID userUUId = UUID.fromString("098c2423-879e-52f2-01d2-f73eb8d04840");
+		User user = new User(userUUId,"test","0600000000","test@com");
+		user.setUserPreferences(new UserPreferences(userPreferencesDto));
+		assertEquals(user.getUserPreferences().getNumberOfAdults() ,userPreferencesDto.getNumberOfAdults());
 	}
 	
 	
