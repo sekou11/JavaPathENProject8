@@ -23,6 +23,7 @@ public class TestTourGuideService {
 
 	@Test
 	public void getUserLocation() {
+
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
