@@ -15,13 +15,16 @@ import org.springframework.stereotype.Service;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
+
+
+import tourGuide.DTO.RecentUserLocationDto;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.DTO.NearbyAttractionDto;
 import tourGuide.DTO.NearestAttractionDto;
 
+
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
-import tourGuide.user.UserPreferences;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
@@ -107,7 +110,7 @@ public class TourGuideService {
 		List<NearestAttractionDto> nearestAttractionDtoList = new ArrayList<>();
 
 		gpsUtil.getAttractions().forEach(attraction -> {
-			NearestAttractionDto nearestAttractionDto = new NearestAttractionDto(
+					NearestAttractionDto nearestAttractionDto = new NearestAttractionDto(
 							attraction.attractionName,
 							attraction,
 							rewardsService.getDistance(attraction,visitedLocation.location),
@@ -129,8 +132,21 @@ public class TourGuideService {
 		return  nearbyAttractionDto;
 
 	}
+	public List<RecentUserLocationDto>getAllusersCurrentLocation(){
+		List<User>userList = this.getAllUsers();
+		List<RecentUserLocationDto> recentUserLocationDtos = new CopyOnWriteArrayList<>();
 
-	
+		for (User user : userList){
+
+			recentUserLocationDtos.add(new RecentUserLocationDto(user.getUserId().toString(), user.getUserName(), user.getLastVisitedLocation().location));
+
+		}
+      return recentUserLocationDtos;
+	}
+
+
+
+
 	private void addShutDownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread() { 
 		      public void run() {

@@ -13,10 +13,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NearbyAttractionDto  {
+public class NearbyAttractionDto {
+
 	private Location userLocation;
 	private List<NearestAttractionDto> closestAttractionsList;
 
-
-
 }
+
+
+

@@ -6,14 +6,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import gpsUtil.GpsUtil;
-import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 import rewardCentral.RewardCentral;
 import tourGuide.DTO.NearbyAttractionDto;
+import tourGuide.DTO.RecentUserLocationDto;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
@@ -124,6 +123,17 @@ public class TestTourGuideService {
 		tourGuideService.tracker.stopTracking();
 		
 		assertEquals(5, providers.size());
+	}
+
+	@Test
+	public void getAllCurrentUserLocations() {
+		GpsUtil gpsUtil = new GpsUtil();
+		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
+		InternalTestHelper.setInternalUserNumber(0);
+		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
+       int nbUsers = tourGuideService.getAllUsers().size();
+		List<RecentUserLocationDto> recentUserLocationDto = tourGuideService.getAllusersCurrentLocation();
+		assertEquals(recentUserLocationDto.size() ,nbUsers);
 	}
 	
 	
