@@ -60,7 +60,7 @@ public class TourGuideController {
     	//        ...
     	//     }
     	
-    	return JsonStream.serialize(tourGuideService.getAllusersCurrentLocation());
+    	return JsonStream.serialize(tourGuideService.getAllUsersCurrentLocation());
     }
     
     @GetMapping("/getTripDeals")
@@ -70,7 +70,7 @@ public class TourGuideController {
     }
     @PutMapping("/update/Preferences")
     public String updatePreferences(@RequestParam String userName, @RequestBody UserPreferencesDto userPreferencesDTO) {
-        return JsonStream.serialize(new UserPreferencesDto(userName, tourGuideService.updateUserPreferences(userName, userPreferencesDTO)));
+        return JsonStream.serialize(new UserPreferencesDto(userName, tourGuideService.userUpdatePreferences(userName, userPreferencesDTO)));
     }
     
     private User getUser(String userName) {
