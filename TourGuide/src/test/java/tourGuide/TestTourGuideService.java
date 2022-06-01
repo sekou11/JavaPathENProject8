@@ -1,15 +1,8 @@
 package tourGuide;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.UUID;
-
-import org.junit.Test;
-
 import gpsUtil.GpsUtil;
 import gpsUtil.location.VisitedLocation;
+import org.junit.Test;
 import rewardCentral.RewardCentral;
 import tourGuide.DTO.NearbyAttractionDto;
 import tourGuide.DTO.RecentUserLocationDto;
@@ -20,6 +13,12 @@ import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
 import tourGuide.user.UserPreferences;
 import tripPricer.Provider;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestTourGuideService {
 

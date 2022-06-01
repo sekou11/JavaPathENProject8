@@ -1,17 +1,15 @@
 package tourGuide;
 
-import java.util.List;
-
+import com.jsoniter.output.JsonStream;
+import gpsUtil.location.VisitedLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.jsoniter.output.JsonStream;
-
-import gpsUtil.location.VisitedLocation;
 import tourGuide.DTO.UserPreferencesDto;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
 import tripPricer.Provider;
+
+import java.util.List;
 
 @RestController
 public class TourGuideController {

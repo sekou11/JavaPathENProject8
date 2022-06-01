@@ -1,10 +1,10 @@
 package tourGuide.DTO;
 
+import gpsUtil.location.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import gpsUtil.location.Location;
 
 @Getter
 @Setter

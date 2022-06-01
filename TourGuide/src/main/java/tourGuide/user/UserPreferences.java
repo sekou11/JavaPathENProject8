@@ -1,12 +1,12 @@
 package tourGuide.user;
 
-import javax.money.CurrencyUnit;
-import javax.money.Monetary;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.javamoney.moneta.Money;
 import tourGuide.DTO.UserPreferencesDto;
+
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
 
 @Getter @Setter
 public class UserPreferences {
