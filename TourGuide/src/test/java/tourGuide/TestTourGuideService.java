@@ -134,7 +134,7 @@ public class TestTourGuideService {
 		InternalTestHelper.setInternalUserNumber(0);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
        int nbUsers = tourGuideService.getAllUsers().size();
-		List<RecentUserLocationDto> recentUserLocationDto = tourGuideService.getAllusersCurrentLocation();
+		List<RecentUserLocationDto> recentUserLocationDto = tourGuideService.getAllUsersCurrentLocation();
 		assertEquals(recentUserLocationDto.size() ,nbUsers);
 	}
 
@@ -143,7 +143,7 @@ public class TestTourGuideService {
 		UserPreferencesDto userPreferencesDto = new UserPreferencesDto();
 		userPreferencesDto.setNumberOfAdults(2);
 		userPreferencesDto.setTripDuration(3);
-		userPreferencesDto.sgitetCurrency("USD");
+		userPreferencesDto.setCurrency("USD");
 
 		UUID userUUId = UUID.fromString("098c2423-879e-52f2-01d2-f73eb8d04840");
 		User user = new User(userUUId,"test","0600000000","test@com");
@@ -151,5 +151,5 @@ public class TestTourGuideService {
 		assertEquals(user.getUserPreferences().getNumberOfAdults() ,userPreferencesDto.getNumberOfAdults());
 	}
 	
-	
+
 }
