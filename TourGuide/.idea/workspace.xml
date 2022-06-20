@@ -6,17 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e9ec9ba5-326d-4c9b-aa53-d2034c15acdc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/src/main/java/gps/utils/Application.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/src/main/java/gps/utils/entity/UserDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gps.utils/src/test/java/gps/utils/ApplicationTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
