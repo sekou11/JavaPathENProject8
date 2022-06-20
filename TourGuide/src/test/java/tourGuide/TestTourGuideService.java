@@ -1,10 +1,21 @@
 package tourGuide;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import gpsUtil.GpsUtil;
 import gpsUtil.location.VisitedLocation;
-import org.junit.Test;
+import junit.framework.Assert;
 import rewardCentral.RewardCentral;
-import tourGuide.DTO.NearbyAttractionDto;
 import tourGuide.DTO.RecentUserLocationDto;
 import tourGuide.DTO.UserPreferencesDto;
 import tourGuide.helper.InternalTestHelper;
@@ -13,18 +24,18 @@ import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
 import tourGuide.user.UserPreferences;
 import tripPricer.Provider;
-
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TestTourGuideService {
 
+	@Autowired
+	private GpsUtil gpsUtil;
+
+	@Autowired
+	private RewardCentral rewardCentral;
+	
 	@Test
 	public void getUserLocation() {
-
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
@@ -33,9 +44,8 @@ public class TestTourGuideService {
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
 		tourGuideService.tracker.stopTracking();
-		assertTrue(visitedLocation.userId.equals(user.getUserId()));
+		assertEquals(visitedLocation.userId, user.getUserId());
 	}
-	
 	@Test
 	public void addUser() {
 		GpsUtil gpsUtil = new GpsUtil();
@@ -93,24 +103,6 @@ public class TestTourGuideService {
 		
 		assertEquals(user.getUserId(), visitedLocation.userId);
 	}
-	
-	//@Ignore // Not yet implemented
-	@Test
-	public void getNearbyAttractions() {
-		GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
-		InternalTestHelper.setInternalUserNumber(0);
-		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-		
-		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-		VisitedLocation visitedLocation = tourGuideService.trackUserLocation(user);
-		
-		NearbyAttractionDto attractions = tourGuideService.getNearByAttractions(visitedLocation);
-		
-		tourGuideService.tracker.stopTracking();
-		
-		assertEquals(5, attractions.getClosestAttractionsList().size());
-	}
 	@Test
 	public void getTripDeals() {
 		GpsUtil gpsUtil = new GpsUtil();
@@ -126,30 +118,34 @@ public class TestTourGuideService {
 		
 		assertEquals(5, providers.size());
 	}
-
 	@Test
 	public void getAllCurrentUserLocations() {
-		GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
+		//GpsUtilProxyService gpsUtil = new GpsUtilProxyServiceImpl();
+		RewardsService rewardsService = new RewardsService(gpsUtil, rewardCentral);
 		InternalTestHelper.setInternalUserNumber(0);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-       int nbUsers = tourGuideService.getAllUsers().size();
-		List<RecentUserLocationDto> recentUserLocationDto = tourGuideService.getAllUsersCurrentLocation();
-		assertEquals(recentUserLocationDto.size() ,nbUsers);
+
+		int nbUsers = tourGuideService.getAllUsers().size();
+
+		List<RecentUserLocationDto> recentUserLocationDtos = tourGuideService.getAllUsersCurrentLocation();
+
+		assertEquals(recentUserLocationDtos.size(), nbUsers);
 	}
 
 	@Test
-	public void userUpdatePreferences(){
-		UserPreferencesDto userPreferencesDto = new UserPreferencesDto();
-		userPreferencesDto.setNumberOfAdults(2);
-		userPreferencesDto.setTripDuration(3);
-		userPreferencesDto.setCurrency("USD");
+	public void userUpdatePreferences() {
+		UserPreferencesDto userPreferencesDTO = new UserPreferencesDto();
+		userPreferencesDTO.setNumberOfAdults(2);
+		userPreferencesDTO.setTripDuration(3);
+		userPreferencesDTO.setCurrency("USD");
 
-		UUID userUUId = UUID.fromString("098c2423-879e-52f2-01d2-f73eb8d04840");
-		User user = new User(userUUId,"test","0600000000","test@com");
-		user.setUserPreferences(new UserPreferences(userPreferencesDto));
-		assertEquals(user.getUserPreferences().getNumberOfAdults() ,userPreferencesDto.getNumberOfAdults());
+		UUID userUUID = UUID.fromString("098c2423-879e-52f2-01d2-f73eb8d04840");
+		User user = new User(userUUID, "internalUserTest", "0600000000", "internalUsertest@test.com");
+
+		user.setUserPreferences(new UserPreferences(userPreferencesDTO));
+		assertEquals(user.getUserPreferences().getNumberOfAdults(), userPreferencesDTO.getNumberOfAdults());
 	}
+
 	
 
 }
