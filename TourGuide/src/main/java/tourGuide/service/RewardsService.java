@@ -12,9 +12,16 @@ import tourGuide.user.UserReward;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class RewardsService {
+	private final Logger logger = LoggerFactory.getLogger(RewardsService.class);
 	private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
 
 	// proximity in miles
@@ -50,6 +57,28 @@ public class RewardsService {
 				}
 			}
 		}
+	}
+	public void newCalculateRewards(List<User>userList) {
+		ExecutorService executorService = Executors.newFixedThreadPool(800);
+		  for (User user : userList) {
+			Runnable runnableTask =()->{
+				calculateRewards(user);
+			};
+			executorService.execute(runnableTask);
+		}
+		  executorService.shutdown();
+		  try {
+				boolean isExecutorFinished = executorService.awaitTermination(20, TimeUnit.MINUTES);
+				if (!isExecutorFinished) {
+					logger.error("calculateRewards does not finish in 20 minutes elapsed time");
+					executorService.shutdownNow();
+				} else {
+					logger.debug("calculateRewards finished before the 20 minutes elapsed time");
+				}
+			} catch (InterruptedException e) {
+				logger.error("executorService was interrupted : " + e.getLocalizedMessage());
+				executorService.shutdownNow();
+			}
 	}
 
 	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {

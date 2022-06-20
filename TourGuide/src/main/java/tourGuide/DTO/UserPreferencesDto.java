@@ -20,8 +20,14 @@ public class UserPreferencesDto {
     public UserPreferencesDto() {
     }
 
-    public UserPreferencesDto(String username, int attractionProximity, String currency, int lowerPricePoint,
-                              int highPricePoint, int tripDuration, int ticketQuantity, int numberOfAdults,
+    public UserPreferencesDto(String username, 
+    						  int attractionProximity,
+    						  String currency,
+    						  int lowerPricePoint,
+                              int highPricePoint,
+                              int tripDuration,
+                              int ticketQuantity,
+                              int numberOfAdults,
                               int numberOfChildren) {
         this.username = username;
         this.attractionProximity = attractionProximity;
