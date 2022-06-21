@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import gpsUtil.GpsUtil;
 import gpsUtil.location.VisitedLocation;
-import junit.framework.Assert;
 import rewardCentral.RewardCentral;
 import tourGuide.DTO.RecentUserLocationDto;
 import tourGuide.DTO.UserPreferencesDto;
